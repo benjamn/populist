@@ -1,0 +1,45 @@
+{
+  "author": {
+    "name": "Ben Newman",
+    "email": "bn@cs.stanford.edu"
+  },
+  "name": "populist",
+  "description": "A JavaScript module loader that gives the people what they want: good old-fashioned global variables, thank you very much.",
+  "keywords": [
+    "modules",
+    "require",
+    "commonjs",
+    "exports",
+    "populist",
+    "browserify",
+    "wrapup",
+    "stitch"
+  ],
+  "version": "0.0.1",
+  "license": "MIT",
+  "homepage": "http://github.com/benjamn/populist",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/benjamn/populist.git"
+  },
+  "main": "main.js",
+  "bin": {
+    "pander": "./bin/pander"
+  },
+  "scripts": {
+    "test": "whiskey test/run.js"
+  },
+  "dependencies": {
+    "q": ">= 0.9.6",
+    "esprima": ">= 1.0.3",
+    "ast-types": "~0.2.16",
+    "commander": "~1.1.1",
+    "graceful-fs": "~1.2.2"
+  },
+  "optionalDependencies": {
+    "whiskey": "0.6.x"
+  },
+  "engines": {
+    "node": ">= 0.8"
+  }
+}
