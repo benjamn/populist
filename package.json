@@ -4,7 +4,7 @@
     "email": "bn@cs.stanford.edu"
   },
   "name": "populist",
-  "description": "A JavaScript module loader that gives the people what they want: good old-fashioned global variables, thank you very much.",
+  "description": "A JavaScript module loader that gives the people what they want",
   "keywords": [
     "modules",
     "require",
