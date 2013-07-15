@@ -114,3 +114,24 @@ exports.testExtra = function(t, assert) {
     t.finish();
   });
 };
+
+exports.testDeleteModuleExports = function(t, assert) {
+  populist.buildP({
+    rootDirectory: __dirname,
+    args: ["reset:reset"]
+  }).done(function(output) {
+    var vm = require("vm");
+    var context = getContext();
+    vm.runInContext(output, context);
+
+    var key1 = context.reset.key;
+    assert.strictEqual(typeof key1, "string");
+    vm.runInContext("reset.reset()", context);
+
+    var key2 = context.reset.key;
+    assert.strictEqual(typeof key1, "string");
+    assert.notStrictEqual(key1, key2);
+
+    t.finish();
+  });
+};
