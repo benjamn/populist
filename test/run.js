@@ -137,3 +137,21 @@ exports.testDeleteModuleExports = function(t, assert) {
     t.finish();
   });
 };
+
+exports.testGlobal = function(t, assert) {
+  populist.buildP({
+    rootDirectory: rootDirectory,
+    args: ["foo:foo"]
+  }).done(function(output) {
+    var vm = require("vm");
+    var context = getContext();
+    vm.runInContext(output, context);
+
+    assert.strictEqual(
+      context.foo.global,
+      context.foo.self
+    );
+
+    t.finish();
+  });
+};
