@@ -12,7 +12,14 @@
       module(function(rid) {
         return internalRequire(absolutize(id, rid));
       }, module.exports = {}, module);
+
+      // If the module id has a non-null value in the entries object,
+      // define a global reference to its exports object.
+      var globalName = entries[id];
+      if (globalName && hasOwn.call(entries, id))
+        global[globalName] = module.exports;
     }
+
     return module.exports;
   }
 
@@ -32,6 +39,7 @@
         throw new Error("Missing module: " + id);
       }
     }
+
     return modules[id];
   }
 
@@ -46,13 +54,8 @@
     return rid;
   }
 
-  for (var id in entries) {
-    if (hasOwn.call(entries, id)) {
-      var exports = internalRequire(id);
-      var globalName = entries[id];
-      if (globalName) {
-        global[globalName] = exports;
-      }
-    }
-  }
+  // Eagerly require all identifiers that are keys of the entries object.
+  for (var id in entries)
+    if (hasOwn.call(entries, id))
+      internalRequire(id);
 })
