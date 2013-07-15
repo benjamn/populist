@@ -8,7 +8,7 @@ var hasOwn = Object.prototype.hasOwnProperty;
 
 function cliBuildP() {
   var options = require("commander")
-    .usage("[-r] <root directory> [-o <output file>] [<global name>:]<module ID>")
+    .usage("[-r] <root directory> [-o <output file>] <module ID>[:<global name>]")
     .option("-r, --root-directory <dir>",
         "Directory in which to find CommonJS files")
     .option("-o, --output-file <file>",
@@ -40,8 +40,8 @@ function buildP(options) {
   rest.forEach(function(entry) {
     var splat = entry.split(":"), id;
     if (splat.length === 2) {
-      id = splat[1];
-      entries[id] = splat[0] || null;
+      id = splat[0];
+      entries[id] = splat[1] || null;
     } else if (splat.length === 1) {
       id = splat[0];
       entries[id] = id;

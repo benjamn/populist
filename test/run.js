@@ -3,7 +3,7 @@ var populist = require("../main");
 exports.testBasic = function(t, assert) {
   populist.buildP({
     rootDirectory: __dirname,
-    args: ["Foo:foo"]
+    args: ["foo:Foo"]
   }).done(function(output) {
     assert.ok(output.indexOf("internalRequire") > 0);
     assert.ok(output.indexOf(JSON.stringify({ foo: "Foo" })) > 0);
@@ -15,7 +15,7 @@ exports.testBasic = function(t, assert) {
 exports.testInFakeBrowserEnv = function(t, assert) {
   populist.buildP({
     rootDirectory: __dirname,
-    args: ["Foo:foo", ":anon", "baz"]
+    args: ["foo:Foo", "anon:", "baz"]
   }).done(function(output) {
     var context = getContext();
     require("vm").runInContext(output, context);
