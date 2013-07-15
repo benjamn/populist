@@ -11,7 +11,7 @@
     if (module && !hasOwn.call(module, "exports")) {
       module(function(rid) {
         return internalRequire(absolutize(id, rid));
-      }, module.exports = {}, module);
+      }, module.exports = {}, module, global);
 
       // If the module id has a non-null value in the entries object,
       // define a global reference to its exports object.
@@ -28,7 +28,7 @@
       if (hasOwn.call(sources, id)) {
         var name = "module$" + Math.random().toString(36).slice(2);
         var script = doc.createElement("script");
-        var code = "function " + name + "(require,exports,module){" +
+        var code = "function " + name + "(require,exports,module,global){" +
           sources[id] + "\n}\n//# sourceURL=" + id + ".js\n";
         script.setAttribute("type", "text/javascript");
         script.setAttribute("encoding", "utf8");
