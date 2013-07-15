@@ -1,8 +1,10 @@
 var populist = require("../main");
+var path = require("path");
+var rootDirectory = path.join(__dirname, "modules");
 
 exports.testBasic = function(t, assert) {
   populist.buildP({
-    rootDirectory: __dirname,
+    rootDirectory: rootDirectory,
     args: ["foo:Foo"]
   }).done(function(output) {
     assert.ok(output.indexOf("internalRequire") > 0);
@@ -14,7 +16,7 @@ exports.testBasic = function(t, assert) {
 
 exports.testInFakeBrowserEnv = function(t, assert) {
   populist.buildP({
-    rootDirectory: __dirname,
+    rootDirectory: rootDirectory,
     args: ["foo:Foo", "anon:", "baz:baz"]
   }).done(function(output) {
     var context = getContext();
@@ -99,7 +101,7 @@ function getContext() {
 
 exports.testExtra = function(t, assert) {
   populist.buildP({
-    rootDirectory: __dirname,
+    rootDirectory: rootDirectory,
     args: ["foo:Foo", "extra"]
   }).done(function(output) {
     var vm = require("vm");
@@ -117,7 +119,7 @@ exports.testExtra = function(t, assert) {
 
 exports.testDeleteModuleExports = function(t, assert) {
   populist.buildP({
-    rootDirectory: __dirname,
+    rootDirectory: rootDirectory,
     args: ["reset:reset"]
   }).done(function(output) {
     var vm = require("vm");
