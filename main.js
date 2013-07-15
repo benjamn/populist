@@ -7,20 +7,25 @@ var types = require("ast-types");
 var hasOwn = Object.prototype.hasOwnProperty;
 
 function cliBuildP() {
-  var options = require("commander")
-    .usage("[-r] <root directory> [-o <output file>] <module ID>[:<global name>]")
-    .option("-r, --root-directory <dir>",
-        "Directory in which to find CommonJS files")
-    .option("-o, --output-file <file>",
-        "Name of generated .js bundle file")
-    .parse(process.argv);
+  readFileP(path.join(
+    __dirname, "package.json"
+  )).then(function(json) {
+    var options = require("commander")
+      .version(JSON.parse(json).version)
+      .usage("[-r] <root directory> [-o <output file>] <module ID>[:<global name>]")
+      .option("-r, --root-directory <dir>",
+              "Directory in which to find CommonJS files")
+      .option("-o, --output-file <file>",
+              "Name of generated .js bundle file")
+      .parse(process.argv);
 
-  buildP(options).done(function(output) {
-    if (options.outputFile) {
-      return writeFileP(options.outputFile, output);
-    } else {
-      process.stdout.write(output);
-    }
+    buildP(options).done(function(output) {
+      if (options.outputFile) {
+        return writeFileP(options.outputFile, output);
+      } else {
+        process.stdout.write(output);
+      }
+    });
   });
 }
 
