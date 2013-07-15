@@ -6,12 +6,7 @@ var esprima = require("esprima");
 var types = require("ast-types");
 var hasOwn = Object.prototype.hasOwnProperty;
 
-exports.build = function() {
-  var workingDir = process.cwd();
-  var rootDir;
-  var entries;
-  var rootIDs = {};
-
+function cliBuildP() {
   var options = require("commander")
     .usage("[-r] <root directory> [-o <output file>] [<global name>:]<module ID>")
     .option("-r, --root-directory <dir>",
@@ -20,7 +15,18 @@ exports.build = function() {
         "Name of generated .js bundle file")
     .parse(process.argv);
 
+  buildP(options).done(function(output) {
+    if (options.outputFile) {
+      return writeFileP(options.outputFile, output);
+    } else {
+      process.stdout.write(output);
+    }
+  });
+}
+
+function buildP(options) {
   var rest;
+  var rootDir;
   if (options.rootDirectory) {
     rest = options.args.slice(0);
     rootDir = options.rootDirectory;
@@ -29,36 +35,31 @@ exports.build = function() {
     rootDir = options.args[0];
   }
 
-  var idToGlobal = {};
+  var rootIDs = {};
+  var entries = {};
   rest.forEach(function(entry) {
     var splat = entry.split(":"), id;
     if (splat.length === 2) {
       id = splat[1];
-      idToGlobal[id] = splat[0] || null;
+      entries[id] = splat[0] || null;
     } else if (splat.length === 1) {
       id = splat[0];
-      idToGlobal[id] = id;
+      entries[id] = id;
     }
     rootIDs[id] = true;
   });
 
-  Q.all([
+  return Q.all([
     readFileP(path.join(__dirname, "loader.js")),
     collectDepsP(rootDir, Object.keys(rootIDs))
   ]).spread(function(loader, sources) {
     return loader.trim() + "(" +
-      JSON.stringify(idToGlobal) + ",{\n" +
+      JSON.stringify(entries) + ",{\n" +
       Object.keys(sources).map(function(id) {
         return JSON.stringify(id) + ":" +
           JSON.stringify(sources[id]);
       }).join(",\n") + "\n});\n";
-  }).done(function(output) {
-    if (options.outputFile) {
-      return writeFileP(options.outputFile, output);
-    } else {
-      process.stdout.write(output);
-    }
-  });
+  })
 }
 
 function collectDepsP(rootDir, rootIDs) {
@@ -150,3 +151,7 @@ function absolutize(moduleID, requiredID) {
     requiredID = path.join(moduleID, "..", requiredID);
   return path.normalize(requiredID);
 }
+
+exports.cliBuildP = cliBuildP;
+exports.buildP = buildP;
+exports.getRequiredIDs = getRequiredIDs;
