@@ -1,1 +1,1 @@
-this.anonStatus = "evaluated";
+anonStatus = "evaluated";

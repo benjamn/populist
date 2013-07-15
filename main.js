@@ -38,15 +38,12 @@ function buildP(options) {
   var rootIDs = {};
   var entries = {};
   rest.forEach(function(entry) {
-    var splat = entry.split(":"), id;
-    if (splat.length === 2) {
-      id = splat[0];
-      entries[id] = splat[1] || null;
-    } else if (splat.length === 1) {
-      id = splat[0];
-      entries[id] = id;
-    }
+    var splat = entry.split(":");
+    var id = splat[0];
     rootIDs[id] = true;
+    if (splat.length === 2) {
+      entries[id] = splat[1] || null;
+    }
   });
 
   return Q.all([

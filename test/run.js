@@ -15,7 +15,7 @@ exports.testBasic = function(t, assert) {
 exports.testInFakeBrowserEnv = function(t, assert) {
   populist.buildP({
     rootDirectory: __dirname,
-    args: ["foo:Foo", "anon:", "baz"]
+    args: ["foo:Foo", "anon:", "baz:baz"]
   }).done(function(output) {
     var context = getContext();
     require("vm").runInContext(output, context);
@@ -96,3 +96,21 @@ function getContext() {
 
   return context;
 }
+
+exports.testExtra = function(t, assert) {
+  populist.buildP({
+    rootDirectory: __dirname,
+    args: ["foo:Foo", "extra"]
+  }).done(function(output) {
+    var vm = require("vm");
+    var context = getContext();
+    vm.runInContext(output, context);
+
+    assert.strictEqual(context.extraStatus, void 0);
+    vm.runInContext('Foo.req("extra")', context);
+    assert.strictEqual(context.extraStatus, "evaluated");
+    assert.strictEqual(context.Foo.req("extra").name, "extra");
+
+    t.finish();
+  });
+};
