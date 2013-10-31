@@ -32,7 +32,7 @@
           sources[id] + "\n}\n//# sourceURL=" + id + ".js\n";
         script.setAttribute("type", "text/javascript");
         script.setAttribute("encoding", "utf8");
-        script.appendChild(doc.createTextNode(code));
+        script.text = code;
         head.appendChild(script);
         modules[id] = global[name];
       } else {

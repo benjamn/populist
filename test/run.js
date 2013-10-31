@@ -72,16 +72,9 @@ function getContext() {
       appendChild: function(child) {
         childNodes.push(child);
         if (child.nodeName === "script")
-          vm.runInContext(child.childNodes[0].nodeValue, context);
+          vm.runInContext(child.text, context);
         return child;
       }
-    };
-  }
-
-  function createTextNode(text) {
-    return {
-      nodeType: 3,
-      nodeValue: text
     };
   }
 
@@ -89,7 +82,6 @@ function getContext() {
   var context = vm.createContext({
     document: {
       createElement: createElement,
-      createTextNode: createTextNode,
       documentElement: {
         firstChild: createElement("head")
       }
