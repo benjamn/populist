@@ -33,7 +33,16 @@
         script.setAttribute("type", "text/javascript");
         script.setAttribute("encoding", "utf8");
         script.text = code;
+        var error;
+        var oldOnError = window.onerror;
+        window.onerror = function(message, url, lineNumber){
+          error = SyntaxError(message);
+          error.url = id + '.js';
+          error.line = lineNumber;
+        };
         head.appendChild(script);
+        window.onerror = oldOnError;
+        if (global[name] == null) throw error;
         modules[id] = global[name];
       } else {
         throw new Error("Missing module: " + id);
