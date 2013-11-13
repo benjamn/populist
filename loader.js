@@ -42,7 +42,12 @@
         };
         head.appendChild(script);
         window.onerror = oldOnError;
-        if (global[name] == null) throw error;
+        if (!global[name]){
+          console.error(error.message);
+          console.error(error.url + ':' + error.line);
+          console.error(sources[id].split(/\r\n|\r|\n/)[error.line - 1]);
+          throw error;
+        }
         modules[id] = global[name];
       } else {
         throw new Error("Missing module: " + id);
