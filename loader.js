@@ -34,14 +34,14 @@
         script.setAttribute("encoding", "utf8");
         script.text = code;
         var error;
-        var oldOnError = window.onerror;
-        window.onerror = function(message, url, lineNumber) {
+        var oldOnError = global.onerror;
+        global.onerror = function(message, url, lineNumber) {
           error = new SyntaxError(message);
           error.url = id + '.js';
           error.line = lineNumber;
         };
         head.appendChild(script);
-        window.onerror = oldOnError;
+        global.onerror = oldOnError;
         if (!global[name]) {
           console.error(error.message);
           console.error(error.url + ':' + error.line);
