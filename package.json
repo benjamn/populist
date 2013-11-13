@@ -30,11 +30,11 @@
     "test": "whiskey test/run.js"
   },
   "dependencies": {
-    "q": ">= 0.9.6",
-    "esprima": ">= 1.0.3",
-    "ast-types": "~0.2.16",
-    "commander": "~1.1.1",
-    "graceful-fs": "~2.0.0"
+    "q": ">= 0.9.7",
+    "esprima": ">= 1.0.4",
+    "ast-types": "~0.3.10",
+    "commander": "~2.0.0",
+    "graceful-fs": "~2.0.1"
   },
   "optionalDependencies": {
     "whiskey": "0.6.x"
