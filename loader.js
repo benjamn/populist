@@ -35,14 +35,14 @@
         script.text = code;
         var error;
         var oldOnError = window.onerror;
-        window.onerror = function(message, url, lineNumber){
-          error = SyntaxError(message);
+        window.onerror = function(message, url, lineNumber) {
+          error = new SyntaxError(message);
           error.url = id + '.js';
           error.line = lineNumber;
         };
         head.appendChild(script);
         window.onerror = oldOnError;
-        if (!global[name]){
+        if (!global[name]) {
           console.error(error.message);
           console.error(error.url + ':' + error.line);
           console.error(sources[id].split(/\r\n|\r|\n/)[error.line - 1]);
