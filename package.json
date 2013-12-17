@@ -32,7 +32,7 @@
   "dependencies": {
     "q": ">= 0.9.7",
     "esprima": ">= 1.0.4",
-    "ast-types": "~0.3.10",
+    "ast-types": "~0.3.12",
     "commander": "~2.0.0",
     "graceful-fs": "~2.0.1"
   },

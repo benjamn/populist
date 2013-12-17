@@ -4,6 +4,8 @@ var fs = require("graceful-fs");
 var Q = require("q");
 var esprima = require("esprima");
 var types = require("ast-types");
+var n = types.namedTypes;
+var isString = types.builtInTypes.string;
 var hasOwn = Object.prototype.hasOwnProperty;
 
 function cliBuildP() {
@@ -125,21 +127,19 @@ function readFileP(file) {
 }
 
 function getRequiredIDs(id, source) {
-  var n = types.namedTypes;
-  var isString = types.builtInTypes.string;
   var ast = esprima.parse(source);
   var absoluteIDs = {};
 
-  types.traverse(ast, function(node) {
+  types.traverse.fast(ast, function(node) {
     if (n.CallExpression.check(node) &&
-      n.Identifier.check(node.callee) &&
-      node.callee.name === "require")
-    {
+        n.Identifier.check(node.callee) &&
+        node.callee.name === "require") {
       var args = node.arguments;
       if (args.length === 1 && n.Literal.check(args[0])) {
         var requiredID = args[0].value;
         if (isString.check(requiredID)) {
           absoluteIDs[absolutize(id, requiredID)] = true;
+          return false;
         }
       }
     }
